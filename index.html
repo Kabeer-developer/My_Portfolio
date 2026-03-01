@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -92,7 +93,7 @@
         }
 
         nav .logo {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: var(--accent);
         }
@@ -195,7 +196,6 @@
         .btn-primary {
             background: var(--accent);
             color: white;
-            
         }
 
         .btn-primary:hover {
@@ -597,12 +597,13 @@
     <!-- Navigation -->
     <nav>
         <div class="container">
-            <div class="logo">K</div>
+            <div class="logo">Kabeer A</div>
             <ul>
                 <li><a href="#home">Home</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#projects">Projects</a></li>
+                <li><a href="https://github.com/Kabeer-developer/Kabeer_Profile" target="_blank">Profile</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </div>
@@ -618,7 +619,7 @@
                 <div class="hero-buttons">
                     <a href="#projects" class="btn btn-primary">View Projects</a>
                     <a href="#contact" class="btn btn-secondary">Get In Touch</a>
-                    <a href="kabeer2026resume.pdf" download class="btn btn-secondary">Download CV</a>
+                    <a href="kabeer_resume.html" download class="btn btn-secondary">Download CV</a>
                 </div>
                 <div class="stats">
                     <div class="stat-item">
@@ -910,14 +911,14 @@
                     </div>
                 </div>
 
-                <form class="contact-form" id="contactForm" action="https://formspree.io/f/xlgwkwqj" method="POST">
+                <form class="contact-form" id="contactForm">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" id="name" name="name" placeholder="Your name" required>
+                        <input type="text" id="name" name="from_name" placeholder="Your name" required>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                        <input type="email" id="email" name="reply_to" placeholder="your.email@example.com" required>
                     </div>
                     <div class="form-group">
                         <label for="message">Message</label>
@@ -940,6 +941,43 @@
     </footer>
 
     <script>
+        // EmailJS Configuration
+        // TO MAKE THE FORM WORK:
+        // 1. Go to https://www.emailjs.com/
+        // 2. Sign up with kabeeratwork7@gmail.com
+        // 3. Create an email service (Gmail)
+        // 4. Create an email template with variables: {{from_name}}, {{reply_to}}, {{message}}
+        // 5. Get your Public Key from Account page
+        // 6. Replace YOUR_PUBLIC_KEY, YOUR_SERVICE_ID, YOUR_TEMPLATE_ID below
+        
+        // Uncomment and configure these lines:
+        // emailjs.init('YOUR_PUBLIC_KEY');
+        
+        // Contact form
+        const form = document.getElementById('contactForm');
+        const successMessage = document.getElementById('successMessage');
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Uncomment this section when EmailJS is configured:
+            /*
+            emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', this)
+                .then(function() {
+                    successMessage.classList.add('show');
+                    form.reset();
+                    setTimeout(() => {
+                        successMessage.classList.remove('show');
+                    }, 5000);
+                }, function(error) {
+                    alert('Failed to send message. Please email directly at kabeeratwork7@gmail.com');
+                });
+            */
+            
+            // Temporary - Just show success (remove this after EmailJS setup)
+            alert('Form setup in progress. Please contact me directly via email: kabeeratwork7@gmail.com or phone: +91 8861197933');
+        });
+
         // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -954,38 +992,6 @@
                     });
                 }
             });
-        });
-
-        // Contact form with Formspree
-        const form = document.getElementById('contactForm');
-        const successMessage = document.getElementById('successMessage');
-        
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(form);
-            
-            try {
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-                
-                if (response.ok) {
-                    successMessage.classList.add('show');
-                    form.reset();
-                    setTimeout(() => {
-                        successMessage.classList.remove('show');
-                    }, 5000);
-                } else {
-                    alert('Oops! There was a problem submitting your form. Please try emailing directly.');
-                }
-            } catch (error) {
-                alert('Oops! There was a problem submitting your form. Please try emailing directly.');
-            }
         });
 
         // Active nav link
