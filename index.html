@@ -383,33 +383,47 @@ section:last-of-type { border-bottom:none; }
 .projects-grid {
   display:grid;
   grid-template-columns:1fr;
-  gap:1.5rem;
+  gap:1.75rem;
 }
 @media(min-width:680px)  { .projects-grid { grid-template-columns:repeat(2,1fr); } }
-@media(min-width:1024px) { .projects-grid { grid-template-columns:repeat(3,1fr); gap:1.75rem; } }
+@media(min-width:1024px) { .projects-grid { grid-template-columns:repeat(3,1fr); gap:2rem; } }
 
 .project-card {
   display:flex; flex-direction:column;
   border:1px solid var(--line);
-  border-radius:4px; overflow:hidden;
+  border-radius:6px; overflow:hidden;
   background:var(--paper);
   transition:border-color .2s, transform .22s, box-shadow .22s;
 }
 .project-card:hover {
   border-color:var(--ink);
-  transform:translateY(-4px);
-  box-shadow:0 12px 32px rgba(21,24,29,.1);
+  transform:translateY(-5px);
+  box-shadow:0 18px 40px rgba(21,24,29,.12);
 }
 
-/* image area — screenshots are shown in full (never cropped) */
+/* every card's image box is the same fixed size; the image itself scales up or
+   down (never cropped) to fit inside it, so small and large screenshots line up evenly */
 .project-media {
-  width:100%; height:200px;
+  width:100%; height:210px;
+  overflow:hidden;
   background:var(--paper-2);
   border-bottom:1px solid var(--line);
-  display:flex; align-items:center; justify-content:center;
-  position:relative; overflow:hidden;
-  padding:.85rem;
-  /* hatching pattern shows only where the placeholder/letterbox is visible */
+  position:relative;
+}
+@media(min-width:640px) { .project-media { height:225px; } }
+.project-media img {
+  display:block;
+  width:100%; height:100%;
+  object-fit:contain; /* scales the image to fit the fixed box, up or down, no cropping */
+  transition:transform .5s cubic-bezier(.16,.8,.3,1);
+}
+.project-card:hover .project-media img { transform:scale(1.06); }
+
+.project-media-placeholder {
+  display:none;
+  width:100%; height:100%;
+  flex-direction:column; align-items:center; justify-content:center;
+  color:var(--slate);
   background-image:
     repeating-linear-gradient(
       135deg,
@@ -417,30 +431,8 @@ section:last-of-type { border-bottom:none; }
       rgba(180,175,165,.25) 8px, rgba(180,175,165,.25) 9px
     );
 }
-@media(min-width:640px) { .project-media { height:220px; } }
-.project-media img.project-shot {
-  /* project screenshot, named after the project e.g. Scan2Print.png */
-  max-width:100%; max-height:100%;
-  width:auto; height:auto;
-  object-fit:contain;
-  position:relative;
-  z-index:2;
-  border-radius:3px;
-  box-shadow:0 2px 14px rgba(21,24,29,.12);
-  background:var(--paper);
-  transition:transform .4s cubic-bezier(.16,.8,.3,1);
-}
-.project-card:hover .project-media img.project-shot { transform:scale(1.05); }
-.ph-inner {
-  position:absolute; inset:0;
-  display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  z-index:1;
-  text-align:center; color:var(--slate);
-  pointer-events:none;
-}
-.ph-inner svg { width:28px; height:28px; margin:0 auto .5rem; opacity:.4; }
-.ph-text {
+.project-media-placeholder svg { width:28px; height:28px; margin-bottom:.5rem; opacity:.4; }
+.project-media-placeholder span {
   font-family:'IBM Plex Mono',monospace;
   font-size:.62rem; letter-spacing:.08em;
   text-transform:uppercase; opacity:.6;
@@ -465,8 +457,6 @@ section:last-of-type { border-bottom:none; }
   line-height:1.7;
   margin-bottom:1.1rem;
   flex-grow:1;
-  /* lock to exactly 3 lines on all cards */
-  min-height:calc(.88rem * 1.7 * 3);
 }
 .project-tech {
   display:flex; flex-wrap:wrap; gap:.4rem;
@@ -478,6 +468,7 @@ section:last-of-type { border-bottom:none; }
   font-size:.65rem; color:var(--slate);
   padding:.25rem .55rem;
   background:var(--paper-2);
+  border:1px solid var(--line);
   border-radius:2px;
 }
 .tech-tag img {
@@ -854,10 +845,10 @@ footer .wrap {
       <!-- Scan2Print -->
       <div class="project-card reveal">
         <div class="project-media">
-          <img class="project-shot" src="scan2print.png" alt="Scan2Print screenshot" loading="lazy" onerror="this.style.display='none'">
-          <div class="ph-inner">
+          <img src="scan2print.png" alt="Scan2Print screenshot" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="project-media-placeholder">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            <div class="ph-text">Screenshot coming soon</div>
+            <span>Screenshot coming soon</span>
           </div>
         </div>
         <div class="project-body">
@@ -880,10 +871,10 @@ footer .wrap {
       <!-- SkillSwap -->
       <div class="project-card reveal">
         <div class="project-media">
-          <img class="project-shot" src="skillswap.png" alt="SkillSwap screenshot" loading="lazy" onerror="this.style.display='none'">
-          <div class="ph-inner">
+          <img src="skillswap.png" alt="SkillSwap screenshot" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="project-media-placeholder">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            <div class="ph-text">Screenshot coming soon</div>
+            <span>Screenshot coming soon</span>
           </div>
         </div>
         <div class="project-body">
@@ -906,10 +897,10 @@ footer .wrap {
       <!-- ShopSmart -->
       <div class="project-card reveal">
         <div class="project-media">
-          <img class="project-shot" src="shopSmart.png" alt="ShopSmart screenshot" loading="lazy" onerror="this.style.display='none'">
-          <div class="ph-inner">
+          <img src="shopSmart.png" alt="ShopSmart screenshot" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="project-media-placeholder">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            <div class="ph-text">Screenshot coming soon</div>
+            <span>Screenshot coming soon</span>
           </div>
         </div>
         <div class="project-body">
@@ -932,10 +923,10 @@ footer .wrap {
       <!-- Outreach Pipeline -->
       <div class="project-card reveal">
         <div class="project-media">
-          <img class="project-shot" src="pipeline.png" alt="Outreach Pipeline screenshot" loading="lazy" onerror="this.style.display='none'">
-          <div class="ph-inner">
+          <img src="pipeline.png" alt="Outreach Pipeline screenshot" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="project-media-placeholder">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            <div class="ph-text">Screenshot coming soon</div>
+            <span>Screenshot coming soon</span>
           </div>
         </div>
         <div class="project-body">
@@ -959,10 +950,10 @@ footer .wrap {
       <!-- Trading Dashboard -->
       <div class="project-card reveal">
         <div class="project-media">
-          <img class="project-shot" src="trading.png" alt="Trading Dashboard screenshot" loading="lazy" onerror="this.style.display='none'">
-          <div class="ph-inner">
+          <img src="trading.png" alt="Trading Dashboard screenshot" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="project-media-placeholder">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            <div class="ph-text">Screenshot coming soon</div>
+            <span>Screenshot coming soon</span>
           </div>
         </div>
         <div class="project-body">
@@ -984,10 +975,10 @@ footer .wrap {
       <!-- Weather App -->
       <div class="project-card reveal">
         <div class="project-media">
-          <img class="project-shot" src="weatherApp.png" alt="Weather App screenshot" loading="lazy" onerror="this.style.display='none'">
-          <div class="ph-inner">
+          <img src="weatherApp.png" alt="Weather App screenshot" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="project-media-placeholder">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            <div class="ph-text">Screenshot coming soon</div>
+            <span>Screenshot coming soon</span>
           </div>
         </div>
         <div class="project-body">
